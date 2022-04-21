@@ -17,7 +17,7 @@
 
 def function(
     event, context
-):  # Required by function definition pylint: disable=unused-argument
+):    # Required by function definition pylint: disable=unused-argument
     """Test background function.
 
     It writes the expected output (entry point name and the given value) to the
@@ -31,6 +31,5 @@ def function(
     """
     filename = event["filename"]
     value = event["value"]
-    f = open(filename, "w")
-    f.write('{{"entryPoint": "function", "value": "{}"}}'.format(value))
-    f.close()
+    with open(filename, "w") as f:
+        f.write('{{"entryPoint": "function", "value": "{}"}}'.format(value))

@@ -411,7 +411,7 @@ def test_error_paths(path):
 
     client = create_app(target, source).test_client()
 
-    resp = client.get("/{}".format(path))
+    resp = client.get(f"/{path}")
 
     assert resp.status_code == 404
     assert b"Not Found" in resp.data
@@ -430,7 +430,7 @@ def test_lazy_wsgi_app(monkeypatch, target, source, signature_type):
     # Test that it's lazy
     lazy_app = LazyWSGIApp(target, source, signature_type)
 
-    assert lazy_app.app == None
+    assert lazy_app.app is None
 
     args = [pretend.stub(), pretend.stub()]
     kwargs = {"a": pretend.stub(), "b": pretend.stub()}

@@ -95,13 +95,14 @@ def test_gunicorn_application(debug):
 
     assert gunicorn_app.app == app
     assert gunicorn_app.options == {
-        "bind": "%s:%s" % (host, port),
+        "bind": f"{host}:{port}",
         "workers": 1,
         "threads": 8,
         "timeout": 0,
         "loglevel": "error",
         "limit_request_line": 0,
     }
+
 
     assert gunicorn_app.cfg.bind == ["1.2.3.4:1234"]
     assert gunicorn_app.cfg.workers == 1

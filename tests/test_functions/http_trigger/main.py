@@ -35,7 +35,7 @@ def function(request):
       Exception: Thrown when requested in the incoming mode specification.
     """
     mode = request.get_json().get("mode")
-    print("Mode: " + mode)  # pylint: disable=superfluous-parens
+    print(f"Mode: {mode}")
     if mode == "SUCCESS":
         return "success", 200
     elif mode == "FAILURE":

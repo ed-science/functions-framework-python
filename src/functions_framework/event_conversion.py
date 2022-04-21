@@ -204,7 +204,7 @@ def _split_ce_source(source) -> Tuple[str, str]:
     if not match:
         raise EventConversionException("Unexpected CloudEvent source.")
 
-    return match.group(1), match.group(2)
+    return match[1], match[2]
 
 
 def cloud_event_to_background_event(request) -> Tuple[Any, Context]:
@@ -275,11 +275,11 @@ def _split_resource(context: Context) -> Tuple[str, str, str]:
             if context.event_type.startswith(b_service):
                 service = ce_service
                 break
-        if not service:
-            raise EventConversionException(
-                "Unable to find CloudEvent equivalent service "
-                f"for {context.event_type}"
-            )
+    if not service:
+        raise EventConversionException(
+            "Unable to find CloudEvent equivalent service "
+            f"for {context.event_type}"
+        )
 
     # If we don't need to split the resource string then we're done.
     if service not in _CE_SERVICE_TO_RESOURCE_RE:
@@ -305,7 +305,7 @@ def marshal_background_event_data(request):
             "context": {
                 "eventId": request_data["message"]["messageId"],
                 "timestamp": request_data["message"].get(
-                    "publishTime", datetime.utcnow().isoformat() + "Z"
+                    "publishTime", f"{datetime.utcnow().isoformat()}Z"
                 ),
                 "eventType": _PUBSUB_EVENT_TYPE,
                 "resource": {
@@ -320,6 +320,7 @@ def marshal_background_event_data(request):
                 "attributes": request_data["message"]["attributes"],
             },
         }
+
     except (AttributeError, KeyError, TypeError):
         raise EventConversionException("Failed to convert Pub/Sub payload to event")
 
@@ -337,8 +338,7 @@ def _is_raw_pubsub_payload(request_data) -> bool:
 
 
 def _parse_pubsub_topic(request_path) -> Optional[str]:
-    match = _PUBSUB_TOPIC_REQUEST_PATH.search(request_path)
-    if match:
+    if match := _PUBSUB_TOPIC_REQUEST_PATH.search(request_path):
         return match.group(0)
     else:
         # It is possible to configure a Pub/Sub subscription to push directly to this function

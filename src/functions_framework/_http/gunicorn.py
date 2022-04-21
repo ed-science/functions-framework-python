@@ -18,14 +18,15 @@ import gunicorn.app.base
 class GunicornApplication(gunicorn.app.base.BaseApplication):
     def __init__(self, app, host, port, debug, **options):
         self.options = {
-            "bind": "%s:%s" % (host, port),
+            "bind": f"{host}:{port}",
             "workers": 1,
             "threads": 8,
             "timeout": 0,
             "loglevel": "error",
             "limit_request_line": 0,
         }
-        self.options.update(options)
+
+        self.options |= options
         self.app = app
         super().__init__()
 

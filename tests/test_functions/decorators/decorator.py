@@ -60,7 +60,4 @@ def function_http(request):
       of unrecognized incoming request.
     """
     mode = request.get_json().get("mode")
-    if mode == "path":
-        return request.path
-    else:
-        return "invalid request", 400
+    return request.path if mode == "path" else ("invalid request", 400)

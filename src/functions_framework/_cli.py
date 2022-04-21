@@ -36,8 +36,8 @@ from functions_framework._http import create_server
 def _cli(target, source, signature_type, host, port, debug, dry_run):
     app = create_app(target, source, signature_type)
     if dry_run:
-        click.echo("Function: {}".format(target))
-        click.echo("URL: http://{}:{}/".format(host, port))
+        click.echo(f"Function: {target}")
+        click.echo(f"URL: http://{host}:{port}/")
         click.echo("Dry run successful, shutting down.")
     else:
         create_server(app, debug).run(host, port)

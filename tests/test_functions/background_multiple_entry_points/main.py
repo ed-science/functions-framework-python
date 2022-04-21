@@ -28,9 +28,8 @@ def fun(name, event):
     """
     filename = event["filename"]
     value = event["value"]
-    f = open(filename, "w")
-    f.write('{{"entryPoint": "{}", "value": "{}"}}'.format(name, value))
-    f.close()
+    with open(filename, "w") as f:
+        f.write('{{"entryPoint": "{}", "value": "{}"}}'.format(name, value))
 
 
 def myFunctionFoo(

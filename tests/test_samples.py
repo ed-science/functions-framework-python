@@ -28,7 +28,7 @@ class TestSamples:
         container = client.containers.run(image=TAG, detach=True, ports={8080: 8080})
         timeout = 10
         success = False
-        while success == False and timeout > 0:
+        while not success and timeout > 0:
             try:
                 response = requests.get("http://localhost:8080")
                 if response.text == "Hello world!":
